@@ -3,10 +3,12 @@
 /**
  * Plugin Name: MPL Kiskapu
  * Description: A MPL-es szabályzás kiskapujául szolgáló egyszerű bővítmény.
- * Version: 1.0
+ * Version: 1.0.0
  * Author: OnlineOn
  * Author URI: https://onlineon.hu
  */
+
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 final class MPL_Kiskapu_Final
 {
@@ -21,6 +23,8 @@ final class MPL_Kiskapu_Final
      */
     public function __construct()
     {
+        add_action('plugins_loaded', [$this, 'init_update_checker']);
+
         add_action('plugins_loaded', [$this, 'init_plugin']);
 
         $this->plugin_constants();
@@ -32,6 +36,22 @@ final class MPL_Kiskapu_Final
 
         // add javascript to frontend
         add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
+    }
+
+    /**
+     * Init Update Checker
+     * @since 1.0.0
+     */
+    public function init_update_checker()
+    {
+        require __DIR__ . '/plugin-update-checker/plugin-update-checker.php';
+
+        $myUpdateChecker = PucFactory::buildUpdateChecker(
+            'https://licence.onlineon.hu/plugin-store/mpl-smalldoor.json',
+            __FILE__, //Full path to the main plugin file or functions.php.
+            'mpl-smalldoor'
+        );
+
     }
 
     /**
