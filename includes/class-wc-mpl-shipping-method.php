@@ -44,15 +44,15 @@ if (!class_exists('WC_MPL_Shipping_Method')) {
             add_action('woocommerce_update_options_shipping_' . $this->id, array($this, 'process_admin_options'));
         }
 
-        // public function calculate_shipping($package = array())
-        // {
-        //     $rate = array(
-        //         'id' => $this->id,
-        //         'label' => $this->title,
-        //         'cost' => '990',
-        //     );
-        //     $this->add_rate($rate);
-        // }
+        public function calculate_shipping($package = array())
+        {
+            $rate = array(
+                'id' => $this->id,
+                'label' => $this->title,
+                'cost' => '990',
+            );
+            $this->add_rate($rate);
+        }
 
     }
 }

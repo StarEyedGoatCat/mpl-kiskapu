@@ -60,22 +60,35 @@ class MPL_Shipping_Method
                 break;
         }
 
+        // Assuming prices entered include tax, back-calculate the base price
+        $tax_rate = 0.27; // 27% tax rate
+        $base_cost = $delivery_price / (1 + $tax_rate); // Back out the tax from the displayed price
+
+// Calculate tax amount based on the base cost
+        $tax_amount = $base_cost * $tax_rate;
+
+// Set up taxes array properly for WooCommerce. This might need to be adjusted depending on how taxes are handled in your setup.
+        $taxes = array(
+            1 => $tax_amount,
+        );
+
         $rate = array(
             'id' => $mpl_shipping_method->id,
             'label' => "MPL - Házhozszállítás (Kiszállítási idő: " . $delivery_time . " + " . $extra_charge_name . ")",
             'description' => 'Házhoszszállítás Magyar Posta álltal ' . $delivery_time . ' alatt.',
-            'cost' => $delivery_price / 1.27,
-            'taxes' => array(
-                'total' => $delivery_price / 1.27 * 0.27,
-            ),
+            'cost' => $base_cost, // Use the base cost here
+            'taxes' => $taxes, // Ensure this is structured correctly for WooCommerce. Might be just an array with one element for the tax amount.
             'package' => $package,
         );
 
-        // Generate a unique rate ID to avoid conflicts
+// Generate a unique rate ID to avoid conflicts
         $rate_id = $mpl_shipping_method->id . ':' . md5(wp_json_encode($rate));
-        $rates[$rate_id] = new WC_Shipping_Rate($rate_id, $rate['label'], $rate['cost'], $rate['taxes'], $mpl_shipping_method->id, $rate['package']);
+        $rates[$rate_id] = new WC_Shipping_Rate($rate_id, $rate['label'], $rate['cost'], $taxes, $mpl_shipping_method->id);
+
+        error_log(print_r($rates, true));
 
         return $rates;
+
     }
 
     public function add_extra_charge()
