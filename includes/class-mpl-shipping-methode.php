@@ -33,8 +33,8 @@ class MPL_Shipping_Method
         }
 
         $options = get_option('mpl_sd_settings');
-        $delivery_time = isset($options['delivery_time']) ? $options['delivery_time'] : "15-30 nap";
-        $extra_charge_name = isset($options['extra_charge_name']) ? $options['extra_charge_name'] : "Logisztikai költség";
+        $delivery_time = isset($options['delivery_time']) ? $options['delivery_time'] : "";
+        $extra_charge_name = isset($options['extra_charge_name']) ? $options['extra_charge_name'] : __("Logisztikai költség", "mpl-kiskapu");
         $mpl_shipping_method = new WC_MPL_Shipping_Method();
 
         // get cart weight
@@ -74,18 +74,18 @@ class MPL_Shipping_Method
 
         $rate = array(
             'id' => $mpl_shipping_method->id,
-            'label' => "MPL - Házhozszállítás (Kiszállítási idő: " . $delivery_time . " + " . $extra_charge_name . ")",
-            'description' => 'Házhoszszállítás Magyar Posta álltal ' . $delivery_time . ' alatt.',
+            'label' => __("MPL - Házhozszállítás", "mpl-kiskapu") . " " . __("Kiszállítási idő", "mpl-kiskapu") . ": " . $delivery_time . " + " . $extra_charge_name,
+            'description' => __("Házhoszszállítás Magyar Posta álltal", "mpl-kiskapu") . " " . $delivery_time . " " . __("nap alatt.", "mpl-kiskapu"),
             'cost' => $base_cost, // Use the base cost here
             'taxes' => $taxes, // Ensure this is structured correctly for WooCommerce. Might be just an array with one element for the tax amount.
             'package' => $package,
         );
 
+        $rate = apply_filters('mpl_shipping_rate', $rate, $mpl_shipping_method);
+
 // Generate a unique rate ID to avoid conflicts
         $rate_id = $mpl_shipping_method->id . ':' . md5(wp_json_encode($rate));
         $rates[$rate_id] = new WC_Shipping_Rate($rate_id, $rate['label'], $rate['cost'], $taxes, $mpl_shipping_method->id);
-
-        error_log(print_r($rates, true));
 
         return $rates;
 
@@ -95,7 +95,7 @@ class MPL_Shipping_Method
     {
         $options = get_option('mpl_sd_settings');
         $extra_charge = isset($options['extra_charge']) ? $options['extra_charge'] : 0;
-        $extra_charge_name = isset($options['extra_charge_name']) ? $options['extra_charge_name'] : "Logisztikai költség";
+        $extra_charge_name = isset($options['extra_charge_name']) ? $options['extra_charge_name'] : __("Logisztikai költség", "mpl-kiskapu");
         $net_extra_charge = $extra_charge / 1.27;
         $chosen_methods = WC()->session->get('chosen_shipping_methods')[0];
         $methode_name = explode(':', $chosen_methods)[0];

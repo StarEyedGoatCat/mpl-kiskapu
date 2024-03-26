@@ -3,9 +3,11 @@
 /**
  * Plugin Name: MPL Kiskapu
  * Description: A MPL-es szabályzás kiskapujául szolgáló egyszerű bővítmény.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: OnlineOn
  * Author URI: https://onlineon.hu
+ * License: MIT
+ * Text Domain: mpl-kiskapu
  */
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
@@ -15,7 +17,7 @@ final class MPL_Kiskapu_Final
     /**
      * Define Plugin Version
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * Construct Function

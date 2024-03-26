@@ -11,21 +11,21 @@ class MPL_SD_Admin
 
     public function add_admin_menu()
     {
-        add_menu_page('MPL Kiskapu', 'Kiskapu beállítások', 'manage_options', 'mpl_sd_settings', array($this, 'mpl_sd_settings_page'), 'dashicons-admin-generic', 110);
+        add_menu_page(__('MPL Kiskapu', 'mpl-kiskapu'), __('MPL Kiskapu', 'mpl-kiskapu'), 'manage_options', 'mpl_sd_settings', array($this, 'mpl_sd_settings_page'), 'dashicons-cart', 30);
     }
 
     public function register_settings()
     {
         register_setting('mpl_sd_settings_group', 'mpl_sd_settings');
-        add_settings_section('mpl_sd_settings_section', 'Kiskapu beállítások', array($this, 'mpl_sd_settings_section'), 'mpl_sd_settings');
+        add_settings_section('mpl_sd_settings_section', __('Kiskapu beállítások', 'mpl-kiskapu'), array($this, 'mpl_sd_settings_section'), 'mpl_sd_settings');
         // felár
-        add_settings_field('mpl_sd_settings_field_extra_charge', 'Felár', array($this, 'mpl_sd_settings_field_extra_charge'), 'mpl_sd_settings', 'mpl_sd_settings_section');
+        add_settings_field('mpl_sd_settings_field_extra_charge', __('Felár', 'mpl-kiskapu'), array($this, 'mpl_sd_settings_field_extra_charge'), 'mpl_sd_settings', 'mpl_sd_settings_section');
         // felár megnevezése
-        add_settings_field('mpl_sd_settings_field_extra_charge_name', 'Felár megnevezése', array($this, 'mpl_sd_settings_field_extra_charge_name'), 'mpl_sd_settings', 'mpl_sd_settings_section');
+        add_settings_field('mpl_sd_settings_field_extra_charge_name', __('Felár megnevezése', 'mpl-kiskapu'), array($this, 'mpl_sd_settings_field_extra_charge_name'), 'mpl_sd_settings', 'mpl_sd_settings_section');
         // szállítási idő (nap)
-        add_settings_field('mpl_sd_settings_field_delivery_time', 'Szállítási idő (nap)', array($this, 'mpl_sd_settings_field_delivery_time'), 'mpl_sd_settings', 'mpl_sd_settings_section');
+        add_settings_field('mpl_sd_settings_field_delivery_time', __('Szállítási idő', 'mpl-kiskapu'), array($this, 'mpl_sd_settings_field_delivery_time'), 'mpl_sd_settings', 'mpl_sd_settings_section');
         // select default szállítási osztály
-        add_settings_field('mpl_sd_settings_field_shipping_class', 'Álltalános szállítási osztály', array($this, 'mpl_sd_settings_field_shipping_class'), 'mpl_sd_settings', 'mpl_sd_settings_section');
+        add_settings_field('mpl_sd_settings_field_shipping_class', __('Álltalános szállítási érték', 'mpl-kiskapu'), array($this, 'mpl_sd_settings_field_shipping_class'), 'mpl_sd_settings', 'mpl_sd_settings_section');
     }
 
     public function mpl_sd_settings_page()
@@ -46,7 +46,7 @@ settings_fields('mpl_sd_settings_group');
 
     public function mpl_sd_settings_section()
     {
-        echo 'Kiskapu beállítások';
+        echo __('Kiskapu beállítások', 'mpl-kiskapu');
     }
 
     public function mpl_sd_settings_field_extra_charge()
@@ -68,6 +68,7 @@ settings_fields('mpl_sd_settings_group');
         $options = get_option('mpl_sd_settings');
         $delivery_time = isset($options['delivery_time']) ? $options['delivery_time'] : '';
         echo '<input type="text" name="mpl_sd_settings[delivery_time]" value="' . $delivery_time . '">';
+        echo '<p class="description">' . __('pl.: 15-30 nap', 'mpl-kiskapu') . '</p>';
     }
 
     public function mpl_sd_settings_field_shipping_class()
@@ -76,7 +77,7 @@ settings_fields('mpl_sd_settings_group');
         $shipping_class = isset($options['shipping_class']) ? $options['shipping_class'] : '';
         // options 1990, 2990, 5990
         echo '<select name="mpl_sd_settings[shipping_class]">';
-        echo '<option value="0">Válassz szállítási osztályt</option>';
+        echo '<option value="0">' . __('Válassz', 'mpl-kiskapu') . '</option>'; // default
         echo '<option value="1990" ' . selected($shipping_class, '1990', false) . '>1990</option>';
         echo '<option value="2990" ' . selected($shipping_class, '2990', false) . '>2990</option>';
         echo '<option value="5990" ' . selected($shipping_class, '5990', false) . '>5990</option>';

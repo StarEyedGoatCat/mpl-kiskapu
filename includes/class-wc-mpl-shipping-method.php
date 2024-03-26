@@ -10,24 +10,24 @@ if (!class_exists('WC_MPL_Shipping_Method')) {
 
             $this->id = 'mpl_shipping';
             $this->instance_id = absint($instance_id);
-            $this->method_title = __('MPL');
-            $this->method_description = __('MPL method for demonstration purposes.');
+            $this->method_title = __('MPL', 'mpl-kiskapu');
+            $this->method_description = __('MPL method for demonstration purposes.', 'mpl-kiskapu');
             $this->supports = array(
                 'shipping-zones',
                 'instance-settings',
             );
             $this->instance_form_fields = array(
                 'enabled' => array(
-                    'title' => __('Enable/Disable'),
+                    'title' => __('Enable/Disable', 'mpl-kiskapu'),
                     'type' => 'checkbox',
-                    'label' => __('Enable this shipping method'),
+                    'label' => __('Enable this shipping method', 'mpl-kiskapu'),
                     'default' => 'yes',
                 ),
                 'title' => array(
-                    'title' => __('Method Title'),
+                    'title' => __('Method Title', 'mpl-kiskapu'),
                     'type' => 'text',
-                    'description' => __('This controls the title which the user sees during checkout.'),
-                    'default' => __('Tyche Shipping Method'),
+                    'description' => __('This controls the title which the user sees during checkout.', 'mpl-kiskapu'),
+                    'default' => __('Tyche Shipping Method', 'mpl-kiskapu'),
                     'desc_tip' => true,
                 ),
             );
@@ -51,6 +51,9 @@ if (!class_exists('WC_MPL_Shipping_Method')) {
                 'label' => $this->title,
                 'cost' => '990',
             );
+
+            $rate = apply_filters('woocommerce_shipping_' . $this->id . '_rate', $rate, $this);
+
             $this->add_rate($rate);
         }
 
